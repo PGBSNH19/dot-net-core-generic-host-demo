@@ -12,10 +12,12 @@ namespace GenericHost
     public class MainService : IHostedService
     {
         private readonly OrderContext orderContext;
+        private IHostApplicationLifetime lifetime;
 
-        public MainService(OrderContext orderContext)
+        public MainService(OrderContext orderContext, IHostApplicationLifetime lifetime)
         {
             this.orderContext = orderContext;
+            this.lifetime = lifetime;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -37,6 +39,7 @@ namespace GenericHost
             }
 
             Console.ReadKey();
+            lifetime.StopApplication();
             return Task.CompletedTask;
         }
 
